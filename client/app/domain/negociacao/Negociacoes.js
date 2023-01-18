@@ -15,9 +15,13 @@ class Negociacoes {
   }
 
   /**
-   * @returns {Array<Negociacoes>}
+   * @returns {Array<Negociacao>}
    */
   paraArray() {
     return this.#negociacoes.slice()
+  }
+
+  get volumeTotal() {
+    return this.#negociacoes.reduce((total, negociacao) => total + negociacao.volume, 0)
   }
 }

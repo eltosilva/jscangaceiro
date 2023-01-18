@@ -8,6 +8,8 @@ class NegociacaoController {
   #inputValor
   /**@type {Negociacoes} */
   #negociacoes
+  /**@type {NegociacoesView}*/
+  #negociacoeView
 
   constructor() {
     const $ = document.querySelector.bind(document)
@@ -16,16 +18,16 @@ class NegociacaoController {
     this.#inputQuantidade = $('#quantidade')
     this.#inputValor = $('#valor')
     this.#negociacoes = new Negociacoes()
+    this.#negociacoeView = new NegociacoesView('#negociacoes')
   }
   /**
    * @param {Event} event 
-   */
+  */
   adiciona(event) {
     event.preventDefault()
 
     this.#negociacoes.adiciona(this.#criaNegociacao())
-    console.log(this.#negociacoes.paraArray())
-
+    this.#negociacoeView.update(this.#negociacoes)
     this.#limpaFormulario()
   }
 
