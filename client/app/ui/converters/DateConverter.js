@@ -16,9 +16,9 @@ class DateConverter {
    * @returns {Date}
   */
   static paraData(data) {
-    if (!/\d{4}-\d{2}-\d{2}/g.test(data))
-      throw new Error('A data deve estar no formato aaaa-mm-dd')
+    if (!/\d{2}\/\d{2}\/\d{4}/g.test(data))
+      throw new DataInvalidaException()
 
-    return new Date(data.split('-'))
+    return new Date(data.split('/').reverse())
   }
 }
