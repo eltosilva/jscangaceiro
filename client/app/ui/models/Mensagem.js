@@ -1,18 +1,18 @@
 class Mensagem {
   /**@type {string} */
-  #texto
+  _texto
 
   constructor(texto = '') {
-    this.#texto = texto
+    this._texto = texto
   }
   /**
    * @param {string} texto
    */
   set texto(texto) {
-    this.#texto = texto
+    this._texto = texto
   }
 
   get texto() {
-    return this.#texto
+    return this._texto
   }
 }

@@ -1,11 +1,11 @@
 class Negociacao {
 
   /**@type {Date} */
-  #data
+  _data
   /**@type {number} */
-  #quantidade
+  _quantidade
   /**@type {number} */
-  #valor
+  _valor
 
   /**
    * @param {Date} data 
@@ -13,14 +13,14 @@ class Negociacao {
    * @param {number} valor 
    */
   constructor(data, quantidade, valor) {
-    this.#data = new Date(data)
-    this.#quantidade = quantidade
-    this.#valor = valor
+    this._data = new Date(data)
+    this._quantidade = quantidade
+    this._valor = valor
     Object.freeze(this)
   }
 
-  get data() { return new Date(this.#data) }
-  get quantidade() { return this.#quantidade }
-  get valor() { return this.#valor }
-  get volume() { return this.#quantidade * this.#valor }
+  get data() { return new Date(this._data) }
+  get quantidade() { return this._quantidade }
+  get valor() { return this._valor }
+  get volume() { return this._quantidade * this._valor }
 }

@@ -23,7 +23,6 @@ class Negociacoes {
    * @returns {Array<Negociacao>}
    */
   paraArray() {
-    console.log(this)
     return this._negociacoes.slice()
   }
 

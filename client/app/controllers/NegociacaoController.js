@@ -1,51 +1,43 @@
 class NegociacaoController {
 
   /**@type {HTMLInputElement} */
-  #inputData
+  _inputData
   /**@type {HTMLInputElement} */
-  #inputQuantidade
+  _inputQuantidade
   /**@type {HTMLInputElement} */
-  #inputValor
+  _inputValor
   /**@type {Negociacoes} */
-  #negociacoes
+  _negociacoes
   /**@type {NegociacoesView}*/
-  #negociacoesView
+  _negociacoesView
   /**@type {Mensagem} */
-  #mensagem
+  _mensagem
   /**@type {MensagemView} */
-  #mensagemView
+  _mensagemView
 
   constructor() {
     const $ = document.querySelector.bind(document)
 
-    this.#inputData = $('#data')
-    this.#inputQuantidade = $('#quantidade')
-    this.#inputValor = $('#valor')
+    this._inputData = $('#data')
+    this._inputQuantidade = $('#quantidade')
+    this._inputValor = $('#valor')
 
-    const self = this
-    this.#negociacoes = new Proxy(new Negociacoes(), {
-      get(target, prop, receiver){
-        if(typeof(target[prop]) === 'function' && ['adiciona', 'esvazia'].includes(prop))
-          return function() {
-            target[prop].apply(target, arguments)
-            self.armadilha(target)
-          }
-
-        return target[prop]
-      }
-    })
     
-    this.#negociacoesView = new NegociacoesView('#negociacoes')
+    this._negociacoes = new Bind(
+      new Negociacoes(),
+      new NegociacoesView('#negociacoes'),
+      'adiciona', 'esvazia'
+    )
 
-    this.#negociacoesView.update(this.#negociacoes)
-
-    this.#mensagem = new Mensagem()
-    this.#mensagemView = new MensagemView('#mensagemView')
-    this.#mensagemView.update(this.#mensagem)
+    this._mensagem = new Bind(
+      new Mensagem(),
+      new MensagemView('#mensagemView'),
+      'texto'
+    )
   }
 
   armadilha(model) {
-    this.#negociacoesView.update(model)
+    this._negociacoesView.update(model)
   }
   /**
    * @param {Event} event 
@@ -53,36 +45,32 @@ class NegociacaoController {
   adiciona(event) {
     event.preventDefault()
 
-    this.#negociacoes.adiciona(this.#criaNegociacao())
-    this.#mensagem.texto = 'Negociação adicionada com sucesso'
+    this._negociacoes.adiciona(this._criaNegociacao())
+    this._mensagem.texto = 'Negociação adicionada com sucesso'
 
-    //this.#negociacoeView.update(this.#negociacoes)
-    this.#mensagemView.update(this.#mensagem)
-    this.#limpaFormulario()
+    this._limpaFormulario()
   }
 
   /**
    * @returns {Negociacao}
    */
-  #criaNegociacao() {
+  _criaNegociacao() {
     return new Negociacao(
-      DateConverter.paraData(this.#inputData.value),
-      parseInt(this.#inputQuantidade.value),
-      parseFloat(this.#inputValor.value)
+      DateConverter.paraData(this._inputData.value),
+      parseInt(this._inputQuantidade.value),
+      parseFloat(this._inputValor.value)
     )
   }
 
-  #limpaFormulario() {
-    this.#inputData.value = ''
-    this.#inputQuantidade.value = 1
-    this.#inputValor.value = 0.0
-    this.#inputData.focus()
+  _limpaFormulario() {
+    this._inputData.value = ''
+    this._inputQuantidade.value = 1
+    this._inputValor.value = 0.0
+    this._inputData.focus()
   }
 
   apaga() {
-    this.#negociacoes.esvazia()
-    // this.#negociacoeView.update(this.#negociacoes)
-    this.#mensagem.texto = 'Negociações apagadas com sucesso'
-    this.#mensagemView.update(this.#mensagem)
+    this._negociacoes.esvazia()
+    this._mensagem.texto = 'Negociações apagadas com sucesso'
   }
 }

@@ -1,19 +1,19 @@
 class View {
   /**@type {HTMLElement} */
-  #elemento
+  _elemento
 
   /**
    * @param {string} seletor 
    */
   constructor(seletor) {
-    this.#elemento = document.querySelector(seletor)
+    this._elemento = document.querySelector(seletor)
   }
 
   /**
    * @param {Mensagem | Negociacoes} model 
    */
   update(model) {
-    this.#elemento.innerHTML = this.template(model)
+    this._elemento.innerHTML = this.template(model)
   }
 
   template(model ) {
