@@ -3,8 +3,14 @@ class Negociacoes {
   /**@type {Array<Negociacao>} */
   #negociacoes
 
-  constructor() {
+  /**@type {Function} */
+  #armadilha
+
+  constructor(armadilha) {
     this.#negociacoes = []
+    
+    this.#armadilha = armadilha
+    Object.freeze(this)
   }
 
   /**
@@ -12,6 +18,12 @@ class Negociacoes {
    */
   adiciona(negociacao){
     this.#negociacoes.push(negociacao)
+    this.#armadilha(this)
+  }
+  
+  esvazia() {
+    this.#negociacoes.length = 0
+    this.#armadilha(this)
   }
 
   /**
@@ -20,6 +32,7 @@ class Negociacoes {
   paraArray() {
     return this.#negociacoes.slice()
   }
+
 
   get volumeTotal() {
     return this.#negociacoes.reduce((total, negociacao) => total + negociacao.volume, 0)

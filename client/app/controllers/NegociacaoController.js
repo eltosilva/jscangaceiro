@@ -9,7 +9,7 @@ class NegociacaoController {
   /**@type {Negociacoes} */
   #negociacoes
   /**@type {NegociacoesView}*/
-  #negociacoeView
+  #negociacoesView
   /**@type {Mensagem} */
   #mensagem
   /**@type {MensagemView} */
@@ -21,14 +21,19 @@ class NegociacaoController {
     this.#inputData = $('#data')
     this.#inputQuantidade = $('#quantidade')
     this.#inputValor = $('#valor')
-    
-    this.#negociacoes = new Negociacoes()
-    this.#negociacoeView = new NegociacoesView('#negociacoes')
-    this.#negociacoeView.update(this.#negociacoes)
-    
+
+    this.#negociacoes = new Negociacoes(model => this.#negociacoesView.update(model) )
+    this.#negociacoesView = new NegociacoesView('#negociacoes')
+
+    this.#negociacoesView.update(this.#negociacoes)
+
     this.#mensagem = new Mensagem()
     this.#mensagemView = new MensagemView('#mensagemView')
     this.#mensagemView.update(this.#mensagem)
+  }
+
+  armadilha(model) {
+    this.#negociacoesView.update(model)
   }
   /**
    * @param {Event} event 
@@ -39,7 +44,7 @@ class NegociacaoController {
     this.#negociacoes.adiciona(this.#criaNegociacao())
     this.#mensagem.texto = 'Negociação adicionada com sucesso'
 
-    this.#negociacoeView.update(this.#negociacoes)
+    //this.#negociacoeView.update(this.#negociacoes)
     this.#mensagemView.update(this.#mensagem)
     this.#limpaFormulario()
   }
@@ -60,5 +65,12 @@ class NegociacaoController {
     this.#inputQuantidade.value = 1
     this.#inputValor.value = 0.0
     this.#inputData.focus()
+  }
+
+  apaga() {
+    this.#negociacoes.esvazia()
+    // this.#negociacoeView.update(this.#negociacoes)
+    this.#mensagem.texto = 'Negociações apagadas com sucesso'
+    this.#mensagemView.update(this.#mensagem)
   }
 }
