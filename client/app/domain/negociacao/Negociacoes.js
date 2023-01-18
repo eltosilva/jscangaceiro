@@ -1,15 +1,10 @@
 class Negociacoes {
   
   /**@type {Array<Negociacao>} */
-  #negociacoes
+  _negociacoes
 
-  /**@type {Function} */
-  #armadilha
-
-  constructor(armadilha) {
-    this.#negociacoes = []
-    
-    this.#armadilha = armadilha
+  constructor() {
+    this._negociacoes = []
     Object.freeze(this)
   }
 
@@ -17,24 +12,23 @@ class Negociacoes {
    * @param {Negociacao} negociacao 
    */
   adiciona(negociacao){
-    this.#negociacoes.push(negociacao)
-    this.#armadilha(this)
+    this._negociacoes.push(negociacao)
   }
   
   esvazia() {
-    this.#negociacoes.length = 0
-    this.#armadilha(this)
+    this._negociacoes.length = 0
   }
 
   /**
    * @returns {Array<Negociacao>}
    */
   paraArray() {
-    return this.#negociacoes.slice()
+    console.log(this)
+    return this._negociacoes.slice()
   }
 
 
   get volumeTotal() {
-    return this.#negociacoes.reduce((total, negociacao) => total + negociacao.volume, 0)
+    return this._negociacoes.reduce((total, negociacao) => total + negociacao.volume, 0)
   }
 }

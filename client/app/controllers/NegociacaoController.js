@@ -22,7 +22,19 @@ class NegociacaoController {
     this.#inputQuantidade = $('#quantidade')
     this.#inputValor = $('#valor')
 
-    this.#negociacoes = new Negociacoes(model => this.#negociacoesView.update(model) )
+    const self = this
+    this.#negociacoes = new Proxy(new Negociacoes(), {
+      get(target, prop, receiver){
+        if(typeof(target[prop]) === 'function' && ['adiciona', 'esvazia'].includes(prop))
+          return function() {
+            target[prop].apply(target, arguments)
+            self.armadilha(target)
+          }
+
+        return target[prop]
+      }
+    })
+    
     this.#negociacoesView = new NegociacoesView('#negociacoes')
 
     this.#negociacoesView.update(this.#negociacoes)
