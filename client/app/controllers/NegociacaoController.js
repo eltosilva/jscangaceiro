@@ -10,6 +10,10 @@ class NegociacaoController {
   #negociacoes
   /**@type {NegociacoesView}*/
   #negociacoeView
+  /**@type {Mensagem} */
+  #mensagem
+  /**@type {MensagemView} */
+  #mensagemView
 
   constructor() {
     const $ = document.querySelector.bind(document)
@@ -17,8 +21,14 @@ class NegociacaoController {
     this.#inputData = $('#data')
     this.#inputQuantidade = $('#quantidade')
     this.#inputValor = $('#valor')
+    
     this.#negociacoes = new Negociacoes()
     this.#negociacoeView = new NegociacoesView('#negociacoes')
+    this.#negociacoeView.update(this.#negociacoes)
+    
+    this.#mensagem = new Mensagem()
+    this.#mensagemView = new MensagemView('#mensagemView')
+    this.#mensagemView.update(this.#mensagem)
   }
   /**
    * @param {Event} event 
@@ -27,7 +37,10 @@ class NegociacaoController {
     event.preventDefault()
 
     this.#negociacoes.adiciona(this.#criaNegociacao())
+    this.#mensagem.texto = 'Negociação adicionada com sucesso'
+
     this.#negociacoeView.update(this.#negociacoes)
+    this.#mensagemView.update(this.#mensagem)
     this.#limpaFormulario()
   }
 

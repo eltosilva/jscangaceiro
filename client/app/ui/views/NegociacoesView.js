@@ -1,14 +1,4 @@
-class NegociacoesView {
-
-  /**@type {HTMLDivElement} */
-  #elemento
-
-  /**
-   * @param {string} seletor 
-   */
-  constructor(seletor) {
-    this.#elemento = document.querySelector(seletor)
-  }
+class NegociacoesView extends View {
 
   /**
    * @param {Negociacoes} model 
@@ -39,12 +29,5 @@ class NegociacoesView {
       </tfoot>
     </table>
     `
-  }
-
-  /**
-   * @param {Negociacoes} model 
-   */
-  update(model) {
-    this.#elemento.innerHTML = this.template(model)
   }
 }

@@ -2,6 +2,4 @@ const controller = new NegociacaoController()
 
 document
   .querySelector('.form')
-  .addEventListener('submit', function(event) {
-    controller.adiciona(event)
-  })
+  .addEventListener('submit', controller.adiciona.bind(controller))
