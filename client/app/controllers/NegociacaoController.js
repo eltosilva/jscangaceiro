@@ -8,12 +8,10 @@ class NegociacaoController {
   _inputValor
   /**@type {Negociacoes} */
   _negociacoes
-  /**@type {NegociacoesView}*/
-  _negociacoesView
   /**@type {Mensagem} */
   _mensagem
-  /**@type {MensagemView} */
-  _mensagemView
+  /**@type {NegociacaoService} */
+  _negociacaoService
 
   constructor() {
     const $ = document.querySelector.bind(document)
@@ -22,7 +20,6 @@ class NegociacaoController {
     this._inputQuantidade = $('#quantidade')
     this._inputValor = $('#valor')
 
-    
     this._negociacoes = new Bind(
       new Negociacoes(),
       new NegociacoesView('#negociacoes'),
@@ -34,26 +31,35 @@ class NegociacaoController {
       new MensagemView('#mensagemView'),
       'texto'
     )
+    this._negociacaoService = new NegociacaoService()
   }
 
-  armadilha(model) {
-    this._negociacoesView.update(model)
+  importaNegociacoes() {
+    this._negociacaoService.obterNegociacoesDaSemana((err, negociacoes) => {
+      if (err) {
+        this._mensagem.texto = 'Não foi possível obter as negociações da semana'
+        return
+      }
+
+      negociacoes.forEach(negociacao => this._negociacoes.adiciona(negociacao))
+      this._mensagem.texto = 'Negociações importadas com sucesso!'
+    })
   }
   /**
    * @param {Event} event 
   */
   adiciona(event) {
-    try{
+    try {
       event.preventDefault()
-  
+
       this._negociacoes.adiciona(this._criaNegociacao())
       this._mensagem.texto = 'Negociação adicionada com sucesso'
-  
+
       this._limpaFormulario()
-    }catch(err){
+    } catch (err) {
       console.error(err)
-      
-      if(err instanceof DataInvalidaException)
+
+      if (err instanceof DataInvalidaException)
         this._mensagem.texto = err.message
       else
         this._mensagem.texto = 'Um erro não esperado aconteceu. Entre em contato com o suporte'
