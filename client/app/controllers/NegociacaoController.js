@@ -11,7 +11,7 @@ class NegociacaoController {
   /**@type {Mensagem} */
   _mensagem
   /**@type {NegociacaoService} */
-  _negociacaoService
+  _service
 
   constructor() {
     const $ = document.querySelector.bind(document)
@@ -31,19 +31,19 @@ class NegociacaoController {
       new MensagemView('#mensagemView'),
       'texto'
     )
-    this._negociacaoService = new NegociacaoService()
+    this._service = new NegociacaoService()
   }
 
   importaNegociacoes() {
-    this._negociacaoService.obterNegociacoesDaSemana((err, negociacoes) => {
-      if (err) {
-        this._mensagem.texto = 'Não foi possível obter as negociações da semana'
-        return
-      }
 
-      negociacoes.forEach(negociacao => this._negociacoes.adiciona(negociacao))
-      this._mensagem.texto = 'Negociações importadas com sucesso!'
+    this._service.obterNegociacoesDoPeriodo()
+    .then(negociacoes => {
+      negociacoes
+        .filter(novaNegociacao => !this._negociacoes.contem(novaNegociacao))
+        .forEach(negociacao => this._negociacoes.adiciona(negociacao))
+      this._mensagem.texto = 'Negocições importadas com sucesso'
     })
+    .catch(err => this._mensagem.texto = err)
   }
   /**
    * @param {Event} event 

@@ -19,6 +19,13 @@ class Negociacao {
     Object.freeze(this)
   }
 
+  equals(negociacao) {
+    if(!negociacao || !negociacao instanceof Negociacao)
+      return false
+
+    return JSON.stringify(this) == JSON.stringify(negociacao)
+  }
+
   get data() { return new Date(this._data) }
   get quantidade() { return this._quantidade }
   get valor() { return this._valor }
