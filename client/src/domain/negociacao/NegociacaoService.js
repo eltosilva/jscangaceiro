@@ -1,4 +1,8 @@
-class NegociacaoService {
+import { DateConverter } from '../../ui/converters/DateConverter.js'
+import { HttpService } from '../../util/HttpService.js'
+import { Negociacao } from './Negociacao.js'
+
+export class NegociacaoService {
 
   /**@type {HttpService} */
   _http

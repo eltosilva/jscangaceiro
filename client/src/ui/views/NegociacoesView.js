@@ -1,4 +1,7 @@
-class NegociacoesView extends View {
+import { DateConverter } from '../converters/DateConverter.js';
+import { View } from './View.js';
+
+export class NegociacoesView extends View {
 
   /**
    * @param {Negociacoes} model 

@@ -1,4 +1,4 @@
-class Mensagem {
+export class Mensagem {
   /**@type {string} */
   _texto
 

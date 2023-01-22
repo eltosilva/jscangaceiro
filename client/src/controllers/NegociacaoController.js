@@ -1,4 +1,8 @@
-class NegociacaoController {
+import { Negociacao, NegociacaoService, Negociacoes } from '../domain/index.js'
+import { DataInvalidaException, DateConverter, Mensagem, MensagemView, NegociacoesView } from '../ui/index.js'
+import { Bind, getNegociacaoDao } from '../util/index.js'
+
+export class NegociacaoController {
 
   /**@type {HTMLInputElement} */
   _inputData

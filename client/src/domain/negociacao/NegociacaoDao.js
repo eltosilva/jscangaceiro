@@ -1,4 +1,6 @@
-class NegociacaoDao {
+import { Negociacao } from './Negociacao.js'
+
+export class NegociacaoDao {
   /**@type {IDBDatabase} */
   _connection
   /**@type {string} */

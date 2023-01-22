@@ -1,4 +1,6 @@
-class Bind {
+import { ProxyFactory } from './ProxyFactory.js'
+
+export class Bind {
   
   /**
    * 

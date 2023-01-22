@@ -1,4 +1,4 @@
-class Negociacoes {
+export class Negociacoes {
   
   /**@type {Array<Negociacao>} */
   _negociacoes

@@ -1,4 +1,4 @@
-class View {
+export class View {
   /**@type {HTMLElement} */
   _elemento
 

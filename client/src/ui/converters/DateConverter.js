@@ -1,4 +1,6 @@
-class DateConverter {
+import { DataInvalidaException } from './DataInvalidaException.js'
+
+export class DateConverter {
 
   constructor() {
     throw Error('Essa classe não pode ser instanciada.')

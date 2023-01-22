@@ -1,4 +1,4 @@
-class Negociacao {
+export class Negociacao {
 
   /**@type {Date} */
   _data

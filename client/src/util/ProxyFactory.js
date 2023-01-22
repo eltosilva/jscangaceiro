@@ -1,4 +1,4 @@
-class ProxyFactory {
+export class ProxyFactory {
   constructor() {
     throw new Error('Essa classe não pode ser instânciada')
   }
