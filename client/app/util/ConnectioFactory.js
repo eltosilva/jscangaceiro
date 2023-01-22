@@ -11,6 +11,9 @@ const ConnectionFactory = (function(){
       throw new Error('Não é possível criar instâncias dessa classe')
     }
   
+    /**
+     * @returns {Promise<IDBDatabase>}
+     */
     static getConnection() {
       return new Promise((resolve, reject) => {
         if(connection)
