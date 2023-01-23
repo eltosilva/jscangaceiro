@@ -1,4 +1,4 @@
-import { ProxyFactory } from './ProxyFactory.js'
+import { ProxyFactory } from './'
 
 export class Bind {
   

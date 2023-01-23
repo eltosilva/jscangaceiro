@@ -1,6 +1,4 @@
 export class Mensagem {
-  /**@type {string} */
-  _texto
 
   constructor(texto = '') {
     this._texto = texto

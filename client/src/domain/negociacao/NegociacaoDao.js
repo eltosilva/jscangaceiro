@@ -1,10 +1,6 @@
-import { Negociacao } from './Negociacao.js'
+import { Negociacao } from './Negociacao'
 
 export class NegociacaoDao {
-  /**@type {IDBDatabase} */
-  _connection
-  /**@type {string} */
-  _store
 
   /** @param {IDBDatabase} connection */
   constructor(connection){

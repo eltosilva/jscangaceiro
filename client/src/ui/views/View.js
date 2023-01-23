@@ -1,6 +1,4 @@
 export class View {
-  /**@type {HTMLElement} */
-  _elemento
 
   /**
    * @param {string} seletor 

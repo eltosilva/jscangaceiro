@@ -1,12 +1,10 @@
-import { DateConverter } from '../../ui/converters/DateConverter.js'
-import { ApplicationException } from '../../util/ApplicationException.js'
-import { HttpService } from '../../util/HttpService.js'
-import { Negociacao } from './Negociacao.js'
+import { DateConverter } from '../../ui'
+import { ApplicationException, HttpService } from '../../util'
+import { Negociacao } from './Negociacao'
+
+const url = 'http://localhost:3000/'
 
 export class NegociacaoService {
-
-  /**@type {HttpService} */
-  _http
 
   constructor() {
     this._http = new HttpService()
@@ -14,7 +12,7 @@ export class NegociacaoService {
 
   obterNegociacoesDaSemana(cb) {
     return this._http
-      .get('negociacoes/semana')
+      .get(url + 'negociacoes/semana')
       .then(
         dados => dados.map(objeto => new Negociacao(DateConverter.paraDataCompleta(objeto.data), objeto.quantidade, objeto.valor)),
         err => { throw new ApplicationException('Não foi possível obter as negociações da semana') }
@@ -23,7 +21,7 @@ export class NegociacaoService {
 
   obterNegociacoesDaSemanaAnterior() {
     return this._http
-      .get('negociacoes/anterior')
+      .get(url + 'negociacoes/anterior')
       .then(
         dados => dados.map(objeto => new Negociacao(DateConverter.paraDataCompleta(objeto.data), objeto.quantidade, objeto.valor)),
         err => { throw new ApplicationException('Não foi possível obter as negociações da semana anterior') }
@@ -32,7 +30,7 @@ export class NegociacaoService {
 
   obterNegociacoesDaSemanaRetrasada(cb) {
     return this._http
-      .get('negociacoes/retrasada')
+      .get(url + 'negociacoes/retrasada')
       .then(
         dados => dados.map(objeto => new Negociacao(DateConverter.paraDataCompleta(objeto.data), objeto.quantidade, objeto.valor)),
         err => { throw new ApplicationException('Não foi possível obter as negociações da semana retrasada') }

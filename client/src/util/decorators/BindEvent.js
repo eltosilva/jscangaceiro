@@ -1,4 +1,4 @@
-import { obrigatorio } from '../index.js';
+import { obrigatorio } from '../';
 
 export function bindEvent(event = obrigatorio('event'), selector = obrigatorio('selector'), prevent = true) {
 

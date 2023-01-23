@@ -1,26 +1,15 @@
-import { Negociacao, NegociacaoService, Negociacoes } from '../domain/index.js'
-import { DataInvalidaException, DateConverter, Mensagem, MensagemView, NegociacoesView } from '../ui/index.js'
-import { Bind, getNegociacaoDao, getExceptionMessage, debounce, controller, bindEvent } from '../util/index.js'
+import { Negociacao, Negociacoes } from '../domain'
+import { DateConverter, Mensagem, MensagemView, NegociacoesView } from '../ui'
+import { Bind, getNegociacaoDao, getExceptionMessage, debounce, controller, bindEvent } from '../util'
 
 @controller('#data', '#quantidade', '#valor')
 export class NegociacaoController {
 
-  /**@type {HTMLInputElement} */
-  _inputData
-  /**@type {HTMLInputElement} */
-  _inputQuantidade
-  /**@type {HTMLInputElement} */
-  _inputValor
-  /**@type {Negociacoes} */
-  _negociacoes
-  /**@type {Mensagem} */
-  _mensagem
-  /**@type {NegociacaoService} */
-  _service
+
 
   constructor(_inputData, _inputQuantidade, _inputValor) {
 
-    Object.assign(this, {_inputData, _inputQuantidade, _inputValor})
+    Object.assign(this, { _inputData, _inputQuantidade, _inputValor })
 
     this._negociacoes = new Bind(
       new Negociacoes(),
@@ -33,7 +22,6 @@ export class NegociacaoController {
       new MensagemView('#mensagemView'),
       'texto'
     )
-    this._service = new NegociacaoService()
 
     this._init()
   }
@@ -52,21 +40,24 @@ export class NegociacaoController {
   @debounce(1500)
   async importaNegociacoes() {
     try {
-      const negociacoes = await this._service.obterNegociacoesDoPeriodo()
+      const {NegociacaoService} = await System.import('../domain/negociacao/NegociacaoService')
+      const service = new NegociacaoService()
+
+      const negociacoes = await service.obterNegociacoesDoPeriodo()
       negociacoes
-      .filter(novaNegociacao => !this._negociacoes.contem(novaNegociacao))
-      .forEach(negociacao => this._negociacoes.adiciona(negociacao))
+        .filter(novaNegociacao => !this._negociacoes.contem(novaNegociacao))
+        .forEach(negociacao => this._negociacoes.adiciona(negociacao))
       this._mensagem.texto = 'Negocições importadas com sucesso'
-    }catch (err){
+    } catch (err) {
       this._mensagem.texto = getExceptionMessage(err)
     }
   }
-  
+
   /**
    * @param {Event} event 
   */
- @bindEvent('submit', '.form')
- @debounce()
+  @bindEvent('submit', '.form')
+  @debounce()
   async adiciona(event) {
     try {
       event.preventDefault()
@@ -110,13 +101,13 @@ export class NegociacaoController {
 
   @bindEvent('click', '#botao-apaga')
   async apaga() {
-    try{
+    try {
       const dao = await getNegociacaoDao()
       await dao.apagaTodos()
 
       this._negociacoes.esvazia()
       this._mensagem.texto = 'Negociações apagadas com sucesso'
-    }catch(err){
+    } catch (err) {
       this._mensagem.texto = getExceptionMessage(err)
     }
   }

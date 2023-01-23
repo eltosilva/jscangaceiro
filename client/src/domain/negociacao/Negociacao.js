@@ -1,13 +1,6 @@
-import { obrigatorio } from '../../util/index.js'
+import { obrigatorio } from '../../util'
 
 export class Negociacao {
-
-  /**@type {Date} */
-  _data
-  /**@type {number} */
-  _quantidade
-  /**@type {number} */
-  _valor
 
   /**
    * @param {Date} data 

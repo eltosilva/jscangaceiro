@@ -1,5 +1,5 @@
-import { NegociacaoDao } from '../domain/negociacao/NegociacaoDao.js';
-import { ConnectionFactory } from './ConnectioFactory.js';
+import { NegociacaoDao } from '../domain';
+import { ConnectionFactory } from './';
 
 /**
  * @returns {Promise<NegociacaoDao>}
