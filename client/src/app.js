@@ -1,14 +1,19 @@
 import { NegociacaoController } from './controllers/NegociacaoController.js'
-import { debounce } from './util/index.js'
+import { Negociacao } from './domain/index.js'
 
 const controller = new NegociacaoController()
 const $ = document.querySelector.bind(document)
 
-$('.form').addEventListener('submit', controller.adiciona.bind(controller))
+const negociacao = {data: new Date(), quantidadde: 1, valor: 200}
 
-$('#botao-apaga').addEventListener('click', controller.apaga.bind(controller))
+const cabecalhos = new Headers()
+cabecalhos.set('Content-Type', 'application/json')
 
-$('#botao-importa').addEventListener('click', debounce( () => {
-  console.log('EXECUTOU A OPERAÇÃO DO DEBOUNCE')
-  controller.importaNegociacoes()
-}, 1000))
+const config = {
+  method: 'POST',
+  headers: cabecalhos,
+  body: JSON.stringify(negociacao)
+}
+
+fetch('/negociacoes', config)
+  .then(() => console.log('Dado enviado com sucesso'))

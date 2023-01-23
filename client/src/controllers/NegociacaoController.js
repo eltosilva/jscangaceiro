@@ -1,7 +1,8 @@
 import { Negociacao, NegociacaoService, Negociacoes } from '../domain/index.js'
 import { DataInvalidaException, DateConverter, Mensagem, MensagemView, NegociacoesView } from '../ui/index.js'
-import { Bind, getNegociacaoDao, getExceptionMessage } from '../util/index.js'
+import { Bind, getNegociacaoDao, getExceptionMessage, debounce, controller, bindEvent } from '../util/index.js'
 
+@controller('#data', '#quantidade', '#valor')
 export class NegociacaoController {
 
   /**@type {HTMLInputElement} */
@@ -17,12 +18,9 @@ export class NegociacaoController {
   /**@type {NegociacaoService} */
   _service
 
-  constructor() {
-    const $ = document.querySelector.bind(document)
+  constructor(_inputData, _inputQuantidade, _inputValor) {
 
-    this._inputData = $('#data')
-    this._inputQuantidade = $('#quantidade')
-    this._inputValor = $('#valor')
+    Object.assign(this, {_inputData, _inputQuantidade, _inputValor})
 
     this._negociacoes = new Bind(
       new Negociacoes(),
@@ -50,21 +48,25 @@ export class NegociacaoController {
     }
   }
 
+  @bindEvent('click', '#botao-importa')
+  @debounce(1500)
   async importaNegociacoes() {
     try {
       const negociacoes = await this._service.obterNegociacoesDoPeriodo()
       negociacoes
-        .filter(novaNegociacao => !this._negociacoes.contem(novaNegociacao))
-        .forEach(negociacao => this._negociacoes.adiciona(negociacao))
+      .filter(novaNegociacao => !this._negociacoes.contem(novaNegociacao))
+      .forEach(negociacao => this._negociacoes.adiciona(negociacao))
       this._mensagem.texto = 'Negocições importadas com sucesso'
     }catch (err){
       this._mensagem.texto = getExceptionMessage(err)
     }
   }
-
+  
   /**
    * @param {Event} event 
   */
+ @bindEvent('submit', '.form')
+ @debounce()
   async adiciona(event) {
     try {
       event.preventDefault()
@@ -106,6 +108,7 @@ export class NegociacaoController {
     this._inputData.focus()
   }
 
+  @bindEvent('click', '#botao-apaga')
   async apaga() {
     try{
       const dao = await getNegociacaoDao()

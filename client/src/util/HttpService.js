@@ -5,18 +5,18 @@ export class HttpService {
    * @returns {Promise}
    */
   get(url) {
-    return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
+    return fetch(url)
+      .then(res => this._handlerErros(res))
+      .then(res => res.json())
+  }
 
-      xhr.open('GET', url)
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState == 4)
-          if (xhr.status == 200)
-            resolve(JSON.parse(xhr.responseText))
-          else
-            reject(xhr.responseText)
-      }
-      xhr.send()
-    })
+  /** 
+   * @param {Response} res 
+   */
+  _handlerErros(res) {
+    if (!res.ok)
+      throw new Error(res.statusText)
+
+    return res
   }
 }

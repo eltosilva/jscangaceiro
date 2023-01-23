@@ -1,3 +1,5 @@
+import { obrigatorio } from '../../util/index.js'
+
 export class Negociacao {
 
   /**@type {Date} */
@@ -12,7 +14,7 @@ export class Negociacao {
    * @param {number} quantidade 
    * @param {number} valor 
    */
-  constructor(data, quantidade, valor) {
+  constructor(data = obrigatorio('data'), quantidade = obrigatorio('quantidade'), valor = obrigatorio('valor')) {
     this._data = new Date(data)
     this._quantidade = quantidade
     this._valor = valor

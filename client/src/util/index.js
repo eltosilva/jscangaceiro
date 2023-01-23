@@ -1,7 +1,11 @@
 export * from './ApplicationException.js'
 export * from './Bind.js'
+export * from './decorators/BindEvent.js'
 export * from './ConnectioFactory.js'
 export * from './DaoFactory.js'
-export * from './Debounce.js'
 export * from './HttpService.js'
+export * from './Obrigatorio.js'
 export * from './ProxyFactory.js'
+
+export * from './decorators/Debounce.js'
+export * from './decorators/Controller.js'
