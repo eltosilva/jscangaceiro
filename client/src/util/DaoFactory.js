@@ -4,8 +4,8 @@ import { ConnectionFactory } from './ConnectioFactory.js';
 /**
  * @returns {Promise<NegociacaoDao>}
  */
-export function getNegociacaoDao() {
-  return ConnectionFactory
-    .getConnection()
-    .then(conn => new NegociacaoDao(conn))
+export async function getNegociacaoDao() {
+  const conn = await ConnectionFactory.getConnection()
+  
+  return new NegociacaoDao(conn)
 }

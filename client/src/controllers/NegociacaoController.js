@@ -1,6 +1,6 @@
 import { Negociacao, NegociacaoService, Negociacoes } from '../domain/index.js'
 import { DataInvalidaException, DateConverter, Mensagem, MensagemView, NegociacoesView } from '../ui/index.js'
-import { Bind, getNegociacaoDao } from '../util/index.js'
+import { Bind, getNegociacaoDao, getExceptionMessage } from '../util/index.js'
 
 export class NegociacaoController {
 
@@ -39,50 +39,52 @@ export class NegociacaoController {
 
     this._init()
   }
-  
-  _init() {
-    getNegociacaoDao()
-      .then(dao => dao.listaTodos())
-      .then(negociacoes => negociacoes.forEach(negociacao => this._negociacoes.adiciona(negociacao)))
-      .catch(err => this._mensagem.texto = err)
+
+  async _init() {
+    try {
+      const dao = await getNegociacaoDao()
+      const negociacoes = await dao.listaTodos()
+      negociacoes.forEach(negociacao => this._negociacoes.adiciona(negociacao))
+    } catch (err) {
+      this._mensagem.texto = getExceptionMessage(err)
+    }
   }
 
-  importaNegociacoes() {
-
-    this._service.obterNegociacoesDoPeriodo()
-    .then(negociacoes => {
+  async importaNegociacoes() {
+    try {
+      const negociacoes = await this._service.obterNegociacoesDoPeriodo()
       negociacoes
         .filter(novaNegociacao => !this._negociacoes.contem(novaNegociacao))
         .forEach(negociacao => this._negociacoes.adiciona(negociacao))
       this._mensagem.texto = 'Negocições importadas com sucesso'
-    })
-    .catch(err => this._mensagem.texto = err)
+    }catch (err){
+      this._mensagem.texto = getExceptionMessage(err)
+    }
   }
 
   /**
    * @param {Event} event 
   */
-  adiciona(event) {
+  async adiciona(event) {
     try {
       event.preventDefault()
 
       const negociacao = this._criaNegociacao()
-      getNegociacaoDao()
-        .then(dao => dao.adiciona(negociacao))
-        .then(() => {
-          this._negociacoes.adiciona(negociacao)
-          this._mensagem.texto = 'Negociacao adicionada com sucesso'
-          this._limpaFormulario()
-        })
-        .catch(err => this._mensagem.texto = err)
+
+      try {
+        const dao = await getNegociacaoDao()
+        await dao.adiciona(negociacao)
+
+        this._negociacoes.adiciona(negociacao)
+        this._mensagem._texto = 'Negociacao adicionada com sucesso'
+        this._limpaFormulario()
+      } catch (err) {
+        this._mensagem._texto = getExceptionMessage(err)
+      }
 
     } catch (err) {
       console.error(err)
-
-      if (err instanceof DataInvalidaException)
-        this._mensagem.texto = err.message
-      else
-        this._mensagem.texto = 'Um erro não esperado aconteceu. Entre em contato com o suporte'
+      this._mensagem.texto = getExceptionMessage(err)
     }
   }
 
@@ -104,17 +106,15 @@ export class NegociacaoController {
     this._inputData.focus()
   }
 
-  apaga() {
+  async apaga() {
+    try{
+      const dao = await getNegociacaoDao()
+      await dao.apagaTodos()
 
-    getNegociacaoDao()
-      .then(dao => dao.apagaTodos())
-      .then(() => {
-        this._negociacoes.esvazia()
-        this._mensagem.texto = 'Negociações apagadas com sucesso'
-      })
-      .catch(err => this._mensagem.texto = err)
-      
-    this._negociacoes.esvazia()
-    this._mensagem.texto = 'Negociações apagadas com sucesso'
+      this._negociacoes.esvazia()
+      this._mensagem.texto = 'Negociações apagadas com sucesso'
+    }catch(err){
+      this._mensagem.texto = getExceptionMessage(err)
+    }
   }
 }
